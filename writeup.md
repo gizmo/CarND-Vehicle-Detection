@@ -85,16 +85,15 @@ I trained a linear SVM using a combination of the HOG features, spatial bin feat
 ####1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
 I decided to search using a sliding window with an overlap of 80% of the window in both x and y directions.  I chose this higher overlap due to a desire to gather more overlapping bounding boxes to help strengthen the heatmap and labeling process.
-In addition, I employed the use of the following scales:  scales = (0.95, 1.0, 1.2, 1.5, 1.7, 2.0)
-Initially I tried scaling way below 0.95 in the range of 0.3, 0.5, etc., but I found these introduced a lot of detection of false positives and so I ended up staying at ranges above 0.95.  I had also experimented with scale values greater than 2.0 but I found these did not make much difference in the results and so I left them out.
+In addition, I employed the use of the following scales:  scales = (0.85, 1.0, 1.2, 1.5, 1.7, 2.0)
+Initially I tried scaling way below 0.95 in the range of 0.3, 0.5, etc., but I found these introduced a lot of detection of false positives and so I ended up staying at ranges above 0.85.  I had also experimented with scale values greater than 2.3 but I found these did not make much difference in the results and so I left them out.  I increased the orient to 12 in order to obtain more features for training from the HOG features.  The pixels_per_cell was left at 8 and I did not need to increase that.  For the spatial bin I did experiment with (32, 32) but in the end I used (16, 16).  
+
+During the search for cars the I restricted the search area in the y-range between 400 and 640 pixels.  In particular the 0-400px range was excluded because we do not expect cars in that range.  This helped to reduce the search time which was also important since I used an xy_overlap window of (0.8, 0.8) and so there were many overlapping windows which would increase the time to search.
 
 ####2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
-Ultimately I searched using all three channels of the YCrCb.  I utilized HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  Here are some example images:
+Ultimately I searched using all three channels of the YCrCb.  I utilized HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  For optimization I ran it using a LinearSVC classifier which was fit against the car and notcar datasets provided.  Note that I augmented through duplication the set of car data from existing car data such the car set equaled the number of notcar set.  I chose YCrCb as it seemed to perform well as mentioned earlier.  This 
 
-![alt text][image4]
-![alt text][image4]
-![alt text][image4]
 ---
 
 ### Video Implementation
