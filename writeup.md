@@ -20,8 +20,7 @@ The goals / steps of this project are the following:
 [image8]: ./output_images/test6_heatmap_labels.png
 [video1]: ./output_images/project_video_output.mp4
 
-## [Rubric](https://review.udacity.com/#!/rubrics/513/view) Points
-###Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
+## [Rubric](https://review.udacity.com/#!/rubrics/513/view) Points 
 
 ---
 ###Writeup / README
@@ -30,9 +29,9 @@ The goals / steps of this project are the following:
 
 You're reading it!
 
-###Histogram of Oriented Gradients (HOG)
+## Histogram of Oriented Gradients (HOG)
 
-####1. Explain how (and identify where in your code) you extracted HOG features from the training images.
+#### 1. Explain how (and identify where in your code) you extracted HOG features from the training images.
 
 The code for this step is contained in the first code cell of the IPython notebook (or in lines # through # of the file called `some_file.py`).  
 
@@ -66,7 +65,7 @@ Here is an example using the `YCrCb` color space HOG parameters such as orient f
  'y_start_stop': [400, 640]}
 
 
-####2. Explain how you settled on your final choice of HOG parameters.
+#### 2. Explain how you settled on your final choice of HOG parameters.
 
 I experimented a lot on the HOG parameters as this was a feature I used for the SVM classifier.  The orient parameter was particularly important as I would find that if I increased the orientations from 8 to 12 then I could end up improving the predictions which ultimately resulted in more bounding boxes around the vehicles.
 
@@ -75,9 +74,9 @@ I experimented a lot on the HOG parameters as this was a feature I used for the 
 I trained a linear SVM using a combination of the HOG features, spatial bin features, and color histogram features.  All three features were raveled to 1-D vectors and concatenated into a single feature vector.  I made sure to normalize this vector since the three individual features contained different magnitudes of values which can bias the results.  I got a good validation prediction with the parameters stated earlier.  With a prediction over 0.92 or so would yield some decent predictions but below that there would be some false positive detections.
 
 
-###Sliding Window Search
+### Sliding Window Search
 
-####1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
+#### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
 I decided to search using a sliding window with an overlap of 80% of the window in both x and y directions.  I chose this higher overlap due to a desire to gather more overlapping bounding boxes to help strengthen the heatmap and labeling process.
 In addition, I employed the use of the following scales:  scales = (0.85, 1.0, 1.2, 1.5, 1.7, 2.0)
@@ -97,7 +96,7 @@ Ultimately I searched using all three channels of the YCrCb.  I utilized HOG fea
 Here's a [link to my video result](./output_images/project_video_output.mp4)
 
 
-####2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
+#### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
 
 I recorded the positions of positive detections in each frame of the video.  From the positive detections I created a heatmap.  I maintained the set of heatmaps for each of the last 8 frames to aid in the a smoothing operation which took the set of bounding box points and computed the means.  I then thresholded that mean map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.  
 
@@ -113,9 +112,9 @@ Here's an example result showing the heatmap from a series of frames of video, t
 
 ---
 
-###Discussion
+### Discussion
 
-####1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
+#### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
 Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
 
