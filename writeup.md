@@ -69,7 +69,7 @@ Here is an example using the `YCrCb` color space HOG parameters such as orient f
 
 I experimented a lot on the HOG parameters as this was a feature I used for the SVM classifier.  The orient parameter was particularly important as I would find that if I increased the orientations from 8 to 12 then I could end up improving the predictions which ultimately resulted in more bounding boxes around the vehicles.
 
-####3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
+#### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
 I trained a linear SVM using a combination of the HOG features, spatial bin features, and color histogram features.  All three features were raveled to 1-D vectors and concatenated into a single feature vector.  I made sure to normalize this vector since the three individual features contained different magnitudes of values which can bias the results.  I got a good validation prediction with the parameters stated earlier.  With a prediction over 0.92 or so would yield some decent predictions but below that there would be some false positive detections.
 
@@ -84,7 +84,7 @@ Initially I tried scaling way below 0.95 in the range of 0.3, 0.5, etc., but I f
 
 During the search for cars the I restricted the search area in the y-range between 400 and 640 pixels.  In particular the 0-400px range was excluded because we do not expect cars in that range.  This helped to reduce the search time which was also important since I used an xy_overlap window of (0.8, 0.8) and so there were many overlapping windows which would increase the time to search.
 
-####2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
+#### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
 Ultimately I searched using all three channels of the YCrCb.  I utilized HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  For optimization I ran it using a LinearSVC classifier which was fit against the car and notcar datasets provided.  Note that I augmented through duplication the set of car data from existing car data such the car set equaled the number of notcar set.  I chose YCrCb as it seemed to perform well as mentioned earlier.  This 
 
@@ -92,7 +92,7 @@ Ultimately I searched using all three channels of the YCrCb.  I utilized HOG fea
 
 ### Video Implementation
 
-####1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
+#### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
 Here's a [link to my video result](./output_images/project_video_output.mp4)
 
 
